@@ -1,7 +1,9 @@
 ShitAppens
 ==========
 
-We track actions which happen at the restroom in the c-base
+* We track actions which happen at the restroom, not only in the [c-base](http://c-base.de/).
+* This project was started at the [DevFest / V Hack Android](http://logbuch.c-base.org/archives/1934)
+weekend taking place in Berlin at October 12./13., 2012.
 
 
 Our main goal
@@ -14,9 +16,33 @@ Our main goal
 * How much cost a toilet visit?
 * How many male persons are visiting the female toilets (and vice versa)
 
-What you can do:
-----------------
+What you can do
+---------------
 
 * See, if a toilet is free?
 * See which toilet is the most visited toilet of the day (and which is the least visited toilet (remember the viruses)!!
 * Highscore (longest visit, fastest visit)
+
+Dependencies
+-------------
+
+* [ActionBarSherlock, Version 4.2.0. (2012-10-08)](https://github.com/JakeWharton/ActionBarSherlock/zipball/4.2.0), 
+  referencing an Eclipse library project named *JakeWharton-ActionBarSherlock-e5c2d1c-library*.
+  Newer version might also work though this cannot be guaranteed.
+
+Idea
+----
+* Tobias Preuss
+
+Development
+-----------
+* Tobias Preuss
+* Jörg Liedl
+* Peter Vasil
+
+Legal stuff
+-----------
+* The project name and idea naturally are under copyright of the original authors.
+  You might however further develop this project, fork the sources, send pull request
+  or open issues. Last but not least, any usage of the sources must include an
+attribution of the original authors.
