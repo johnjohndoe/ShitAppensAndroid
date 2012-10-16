@@ -4,6 +4,7 @@ ShitAppens
 * We track actions which happen at the restroom, not only in the [c-base](http://c-base.de/).
 * This project was started at the [DevFest / V Hack Android](http://logbuch.c-base.org/archives/1934)
 weekend taking place in Berlin at October 12./13., 2012.
+* The server backend for the mobile client can be found in a [separate repository](https://github.com/johnjohndoe/ShitAppensRails).
 
 
 Our main goal
