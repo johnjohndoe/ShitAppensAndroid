@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -22,9 +23,16 @@ public class MainActivity extends SherlockActivity implements OnClickListener, A
 
 	protected Button mLoginButton;
 	protected Button mLogoutButton;
+	protected Button mScanButton;
 	protected ActionBar.Tab mTabScan;
 	protected ActionBar.Tab mTabToilets;
+	
+	private String url = new String();
 
+	JSONObject message = new JSONObject();
+	
+	private EditText commentField;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	setTheme(R.style.Sherlock___Theme_DarkActionBar);
@@ -36,18 +44,33 @@ public class MainActivity extends SherlockActivity implements OnClickListener, A
 
         mLoginButton = (Button)findViewById(R.id.loginButton);
         mLogoutButton = (Button)findViewById(R.id.logoutButton);
+        mScanButton = (Button)findViewById(R.id.scanButton);
+        
         mLoginButton.setOnClickListener(this);
         mLogoutButton.setOnClickListener(this);
+        mScanButton.setOnClickListener(this);
+        
+        commentField = (EditText)findViewById(R.id.editText1);
     }
 
 	public void onClick(View view) {
 		if (view.getId() == mLoginButton.getId()) {
 			Toast.makeText(this, "Login Button clicked", Toast.LENGTH_LONG).show();
-			test();
+			scan();
 		}
 		if (view.getId() == mLogoutButton.getId()) {
 			Toast.makeText(this, "Logout Button clicked", Toast.LENGTH_LONG).show();
-			test2();
+			// occupied toilet
+			postToServer("false");
+
+		}
+		if (view.getId() == mScanButton.getId()) {
+			//Toast.makeText(this, "Logout Button clicked", Toast.LENGTH_LONG).show();
+			//();
+
+//        	RestClient.sendHttpPost(contents, message);
+			// occupied toilet
+			postToServer("true");
 		}
 	}
 
@@ -72,7 +95,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener, A
         return tabToilets;
     }
     
-    private void test(){
+    private void scan(){
     	Log.i("login", "1");
     	 Intent intent = new Intent("com.google.zxing.client.android.SCAN");
          intent.setPackage("com.google.zxing.client.android");
@@ -81,6 +104,37 @@ public class MainActivity extends SherlockActivity implements OnClickListener, A
     }
     
 
+    private void postToServer(String occupied){
+
+    	String commentFieldString = commentField.getText().toString();
+    	if(commentFieldString != "" ){
+    		
+    	
+        	try {
+				message.put("comment", "ick kacke ," + commentFieldString + new Date().toString());
+				message.put("latitude","52.506844");
+            	message.put("longitude","13.424732");
+            	message.put("occupied", occupied);
+            	message.put("sender", "1");
+            	
+            	int x = url.lastIndexOf("=");
+            	String toiletId = url.substring(x+1, url.length());
+            	
+            	Log.i("MainActivity", toiletId);
+            	message.put("toiletId", toiletId);
+            	
+            	RestClient.sendHttpPost(url, message);
+            	
+			} catch (JSONException e) {
+				Log.e("MainActivity", e.toString());
+			}
+    	}else{
+    		Toast.makeText(this, "please add comment", Toast.LENGTH_LONG).show();
+    	}
+    	
+    	
+    }
+    
     private void test2(){
     	
     	Log.i("logout", "2");
@@ -91,26 +145,12 @@ public class MainActivity extends SherlockActivity implements OnClickListener, A
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                String contents = intent.getStringExtra("SCAN_RESULT");
+            	url = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 
-            	Log.i("MainActivity", contents);
+            	Log.i("MainActivity", url);
             	Log.i("MainActivity", format);
             	
-            	
-            	
-            	JSONObject message = new JSONObject();
-            	try {
-					message.put("comment", "ick kacke " + new Date().toString());
-					message.put("latitude","52.506844");
-	            	message.put("longitude","13.424732");
-	            	message.put("occupied","true");
-	            	message.put("sender", "1");
-				} catch (JSONException e) {
-					Log.e("MainActivity", e.toString());
-				}
-            	
-            	RestClient.sendHttpPost(contents, message);
             	
             	
                 
